@@ -1,0 +1,174 @@
+CÂU HỎI VÀ GỢI Ý TRẢ LỜI KHI VẤN ĐÁP (Chương 1 đến 3)
+
+Đề tài: Adaptive Sampling and Low-Power Environmental Monitoring System Using ESP32 and BME280
+
+Cách dùng: đọc để nắm ý, rồi trả lời bằng lời của bạn. Các chỗ có dấu [ ] là số liệu bạn phải điền theo thực tế mạch và code của bạn. Chỉ nói số đã đo, còn chưa đo thì nói "dự kiến" hoặc "mục tiêu".
+
+==================================================
+PHẦN A. CÂU HỎI CHUNG
+==================================================
+
+A1. Em tóm tắt đề tài trong 30 giây.
+Đề tài làm một node đo nhiệt độ, độ ẩm bằng ESP32 và cảm biến BME280. Thay vì đo mãi một chu kỳ cố định, node tự đổi chu kỳ đo: môi trường ổn định thì đo thưa, biến động thì đo dày. Em so sánh hai chế độ (cố định và thích nghi) trên cùng phần cứng về số lần đọc, năng lượng và chất lượng dữ liệu.
+
+A2. Vì sao em chọn đề tài này?
+Node IoT chạy pin bị giới hạn năng lượng. Môi trường như nhiệt độ, độ ẩm thường đổi chậm, nên đo liên tục với chu kỳ cố định tạo nhiều mẫu thừa. Giảm mẫu thừa là cách đơn giản để tiết kiệm năng lượng.
+
+A3. Em đã làm được đến đâu?
+Đã xong ba chương đầu: giới thiệu, cơ sở lý thuyết, thiết kế hệ thống (yêu cầu, sơ đồ khối, phần cứng, phần mềm). Phần tiếp theo là lắp mạch, nạp firmware, đo theo kịch bản, so sánh hai chế độ (Chương 4) và kết luận (Chương 5). [Điền: hiện tại em đã lắp mạch/chạy thử đến mức nào.]
+
+A4. Đóng góp của em là gì?
+Em không nói mình phát minh ra lấy mẫu thích nghi, vì ý tưởng này đã có. Đóng góp của em là cài một phương pháp thích nghi nhẹ chạy trực tiếp trên ESP32 và đánh giá nó với mốc lấy mẫu cố định trên cùng phần cứng, đo đồng thời chu kỳ lấy mẫu, năng lượng và chất lượng dữ liệu.
+
+A5. Hạn chế của đề tài?
+Chỉ một node, chỉ nhiệt độ và độ ẩm (áp suất là thêm), thời gian thử có hạn nên kết quả phụ thuộc vào môi trường lúc thử và các tham số em chọn. Phần cứng là board phát triển nên có tiêu thụ điện nền. Chưa kiểm chứng ngoài trời hay thời gian dài.
+
+A6. Em dùng công cụ AI không? Em làm phần nào?
+Trả lời trung thực và theo quy định của trường về việc dùng AI. Dù dùng công cụ nào, bạn phải tự giải thích được mọi phần: công thức, lưu đồ, vì sao chọn linh kiện và tham số. Nếu chưa hiểu phần nào thì đọc lại trước ngày vấn đáp.
+
+==================================================
+PHẦN B. CHƯƠNG 1 - GIỚI THIỆU
+==================================================
+
+B1. Lấy mẫu thích nghi có phải ý tưởng mới không? Khác gì các nghiên cứu trước?
+Không mới. Có nhiều nghiên cứu về lấy mẫu thích nghi. Ví dụ một nghiên cứu về chu kỳ lấy mẫu thích nghi cho IoT báo cáo giảm dòng tiêu thụ tới khoảng 11% so với lấy mẫu cố định, nhưng làm trên thiết bị ZigBee trong một ca nghiên cứu trồng cà phê, nên kết quả phụ thuộc nền tảng đó. Điểm khác của em là dùng ESP32 và BME280 giá rẻ, phương pháp nhẹ, và đo cả ba thứ cùng lúc trên một phần cứng.
+
+B2. Vì sao không dùng học máy hoặc mô hình dự đoán?
+Mục tiêu là phương pháp nhẹ, chạy được trên vi điều khiển nhỏ mà không cần huấn luyện hay nhiều bộ nhớ. Học máy và dự đoán cho kết quả tốt hơn trong một số trường hợp nhưng phức tạp hơn, và nằm ngoài phạm vi đề tài.
+
+B3. Phạm vi của đề tài? Không làm gì?
+Làm: một node ESP32 + BME280, nhiệt độ và độ ẩm, so sánh cố định và thích nghi. Không làm: học máy, mạng nhiều node, ứng dụng di động hay cloud.
+
+B4. Vì sao chọn ESP32 và BME280?
+ESP32 có I2C sẵn, chạy 3,3 V giống cảm biến, có chế độ ngủ với hẹn giờ thức dậy, và có bộ nhớ RTC giữ dữ liệu khi ngủ. BME280 đo cả ba đại lượng, hỗ trợ I2C và SPI, tiêu thụ chỉ vài micro-ampe (khoảng 3,6 µA ở 1 Hz cho cả ba đại lượng, 0,1 µA khi ngủ theo datasheet của Bosch).
+
+B5. Đề tài ứng dụng ở đâu?
+Giám sát nhiệt độ, độ ẩm ở nơi cần chạy lâu bằng pin và ít bảo trì, như nhà kính, kho hay phòng. [Điền ví dụ gần với đề tài của em.] Đồ án này chỉ chứng minh ở mức một node trong phòng thử.
+
+B6. Em đánh giá thành công bằng tiêu chí nào?
+Theo Bảng 3.1: sai lệch dữ liệu thích nghi so với mốc cố định không vượt sai số cảm biến (±0,5 °C, ±3 %RH), và giảm số lần đọc, số lần thức dậy và năng lượng ít nhất [X %] ở môi trường ổn định.
+
+==================================================
+PHẦN C. CHƯƠNG 2 - CƠ SỞ LÝ THUYẾT
+==================================================
+
+C1. Giải thích lấy mẫu cố định và thích nghi.
+Cố định: đo mỗi Ts giây, đơn giản nhưng đo thừa khi môi trường đứng yên. Thích nghi: chu kỳ thay đổi theo dữ liệu, ổn định thì tăng chu kỳ tới Tmax, biến động thì về Tmin.
+
+C2. Giải thích quy tắc điều chỉnh chu kỳ của em.
+Tính mức thay đổi giữa hai mẫu liên tiếp, D = |x_mới - x_trước|, cho nhiệt độ và độ ẩm. Nếu cả hai nhỏ hơn ngưỡng (θT và θH) thì tăng chu kỳ thêm ΔT nhưng không quá Tmax. Nếu một trong hai đạt ngưỡng thì về Tmin. Quy tắc chỉ cần một phép trừ và một phép so sánh nên chạy nhẹ trên ESP32.
+
+C3. Em chọn Ts, Tmin, Tmax, ΔT, θ thế nào?
+Hiện em chọn Ts = [10 s], Tmin = [10 s], Tmax = [120 s], ΔT = [10 s], θT = [0,3 °C], θH = [2 %RH]. [Điền lý do chọn và nói đây là tham số có thể chỉnh sau khi đo thử.] Ngưỡng nhỏ thì nhạy nhưng tiết kiệm ít, ngưỡng lớn tiết kiệm nhiều nhưng có thể bỏ sót biến động nhỏ. Đây là sự đánh đổi giữa năng lượng và chất lượng dữ liệu.
+
+C4. Nếu có biến động xảy ra khi node đang ngủ lâu thì sao?
+Node chỉ phát hiện ở lần thức dậy kế tiếp, nên Tmax chính là độ trễ phát hiện tối đa. Đó là lý do phải giới hạn Tmax. Với nhiệt độ, độ ẩm thay đổi chậm thì độ trễ này chấp nhận được, nhưng đề tài không dành cho sự kiện rất nhanh.
+
+C5. Vì sao ngủ lại tiết kiệm năng lượng?
+Vi điều khiển tiêu thụ dòng lớn hơn nhiều khi chạy so với khi ngủ. Duty cycling là cho node thức dậy ngắn để đo rồi ngủ ngay. Dòng trung bình Iavg = (Iactive×tactive + Isleep×tsleep)/(tactive + tsleep). Chu kỳ dài hơn thì tỉ lệ thức dậy thấp hơn nên dòng trung bình giảm.
+
+C6. Công thức năng lượng em dùng?
+E = V × I × t. Tỉ lệ tiết kiệm S = (E_cố định - E_thích nghi)/E_cố định × 100%. Giảm số lần đọc R = (N_cố định - N_thích nghi)/N_cố định × 100%.
+
+C7. Giải thích giao thức I2C.
+Hai dây: SDA (dữ liệu) và SCL (xung nhịp). Cả hai là open-drain nên cần điện trở kéo lên. Bộ điều khiển phát xung nhịp, mỗi thiết bị có địa chỉ 7 bit riêng nên nhiều thiết bị dùng chung hai dây. Một lần truyền: điều kiện START, gửi địa chỉ và bit đọc/ghi, thiết bị trả lời bằng bit ACK, truyền dữ liệu từng byte, rồi điều kiện STOP.
+
+C8. Em đánh giá chất lượng dữ liệu thế nào?
+Lấy dữ liệu chế độ cố định làm mốc vì nó có mẫu ở mọi chu kỳ. Dữ liệu thích nghi có ít mẫu hơn nên được dựng lại trên cùng lưới thời gian (giữ giá trị cuối hoặc nội suy tuyến tính). Sau đó tính MAE, RMSE và sai số lớn nhất so với mốc, rồi so với độ chính xác của cảm biến.
+
+C9. I2C khác SPI thế nào, sao chọn I2C?
+SPI nhanh hơn nhưng cần nhiều dây hơn (ít nhất 4). I2C chỉ cần 2 dây, dễ mở rộng thêm cảm biến. Đề tài chỉ có một cảm biến và tốc độ lấy mẫu rất chậm nên I2C là đủ.
+
+==================================================
+PHẦN D. CHƯƠNG 3 - THIẾT KẾ HỆ THỐNG
+==================================================
+
+D1. Giải thích sơ đồ khối.
+Năm khối: cảm biến (BME280), trung tâm (ESP32), truyền thông (USB-UART), nguồn (USB 5 V xuống 3,3 V) và máy tính ghi dữ liệu. Mỗi chu kỳ ESP32 thức dậy, yêu cầu đo, đọc qua I2C, cập nhật chu kỳ, gửi một dòng dữ liệu qua serial, rồi ngủ.
+
+D2. Vì sao dùng nguồn USB mà không dùng pin?
+Để thử và so sánh hai chế độ thuận tiện, đồng thời ghi dữ liệu qua serial bằng cùng một cáp. Em không khẳng định tuổi thọ pin. Nếu cần, có thể ước lượng bằng Tlife = C/Iavg từ dòng đo được.
+
+D3. Board phát triển có ảnh hưởng đến số đo năng lượng không?
+Có. Chip USB-UART và bộ ổn áp trên board vẫn tiêu thụ điện khi ESP32 ngủ, nên số đo tuyệt đối cao hơn chỉ riêng ESP32. Hai chế độ dùng cùng board và cùng cách ngủ, nên phần chênh lệch giữa hai chế độ vẫn phản ánh tác động của lấy mẫu thích nghi. [Điền cách đo dòng em dùng ở Chương 4.]
+
+D4. Vì sao không truyền Wi-Fi?
+Vì mục tiêu là đánh giá riêng tác động của chiến lược lấy mẫu. Radio thường tiêu thụ nhiều và sẽ che mất sự khác biệt. Dữ liệu gửi qua serial là đủ để phân tích.
+
+D5. Vì sao dùng deep sleep và bộ nhớ RTC?
+Deep sleep cho tiêu thụ thấp nhất giữa các lần đo. Sau mỗi lần thức dậy chương trình chạy lại từ đầu nên các giá trị cần giữ (mẫu trước, chu kỳ hiện tại, bộ đếm thời gian) được lưu trong bộ nhớ RTC. [Điền nếu em dùng light sleep hay delay thay vì deep sleep.]
+
+D6. Thời gian trong dòng dữ liệu lấy từ đâu?
+Bộ đếm thời gian chạy được lưu trong RTC memory vì đồng hồ của chương trình bị đặt lại sau mỗi lần ngủ. Thời gian này tính từ các chu kỳ, nên có thể lệch nhẹ so với giờ thật do sai số bộ hẹn giờ. Với việc so sánh hai chế độ thì lệch nhẹ không ảnh hưởng nhiều.
+
+D7. Forced mode là gì, sao dùng?
+Cảm biến ở chế độ ngủ và chỉ đo khi ESP32 yêu cầu, rồi tự quay về ngủ. Datasheet khuyến nghị chế độ này cho tốc độ lấy mẫu thấp. Nó phù hợp vì chu kỳ do em điều khiển.
+
+D8. Điện trở kéo lên bao nhiêu, vì sao?
+Em dùng [4,7 kΩ] nối lên 3,3 V cho SDA và SCL, là giá trị thường dùng ở 3,3 V với tốc độ 100 đến 400 kHz. Nếu module cảm biến đã có sẵn điện trở kéo lên thì điện trở ngoài mắc song song, giá trị thực nhỏ hơn nhưng vẫn trong dải làm việc của bus. Địa chỉ cảm biến là 0x76 (chân SDO nối GND).
+
+D9. Nếu cảm biến không trả lời thì sao?
+Chương trình con đọc cảm biến trả về lỗi, chương trình chính gửi một dòng báo lỗi thay vì dữ liệu, giữ nguyên chu kỳ rồi vẫn lưu trạng thái và ngủ để thử lại ở chu kỳ sau.
+
+D10. Làm sao đảm bảo so sánh công bằng giữa hai chế độ?
+Cùng phần cứng, cùng firmware (chọn chế độ trong code), cùng cách ngủ giữa các mẫu, cùng định dạng dữ liệu. Chỉ khác cách chọn chu kỳ. [Điền: hai chế độ chạy cùng lúc hay lần lượt, trong cùng điều kiện môi trường như thế nào.]
+
+D11. Sai số 0,5 °C và 3 %RH lấy từ đâu? Độ ẩm có đáng tin không?
+Từ datasheet của BME280. Lưu ý đây là thông số của nhà sản xuất; một nghiên cứu thực tế báo cáo sai số độ ẩm của BME280 lớn hơn nhiều khi so với thiết bị chuẩn và nên hiệu chuẩn. Vì vậy em dùng sai số này làm ngưỡng so sánh giữa hai chế độ trên cùng một cảm biến, không dùng để khẳng định độ chính xác tuyệt đối.
+
+==================================================
+PHẦN D2. CHỌN LINH KIỆN (Mục 3.4)
+==================================================
+
+D12. Em chọn ESP32 và BME280 dựa trên cơ sở nào?
+Em so sánh 9 vi điều khiển và 9 cảm biến theo tiêu chí có trọng số (xếp hạng ở Bảng 3.2 và 3.3 trong chương; bảng đầy đủ ở Phụ lục A, Bảng A.1 đến A.7). Vi điều khiển: dòng ngủ, giữ dữ liệu khi ngủ, giao tiếp, hệ sinh thái, độ sẵn có, bộ nhớ. Cảm biến: số đại lượng đo, độ chính xác, dòng tiêu thụ, giao tiếp, hệ sinh thái, chế độ đo theo yêu cầu. ESP32 đạt 4,75/5 và BME280 đạt 4,70/5, cao nhất trong từng nhóm.
+
+D13. ESP32 đâu phải chip ngủ tiết kiệm nhất, sao em chọn?
+Đúng, STM32L432KC ngủ khoảng 1,28 µA và MSP430FR5994 khoảng 0,35 µA, so với khoảng 10 µA của ESP32 (số trong datasheet của chip). Em vẫn chọn ESP32 vì hai lý do. Một, board USB có chip USB-UART và bộ ổn áp vẫn tiêu thụ khi ngủ, dòng nền này thường lớn hơn nhiều chênh lệch vài µA giữa các chip nên không đo thấy được. Hai, ESP32 tốn điện hơn khi thức, nên mỗi lần thức dậy tránh được tiết kiệm một lượng dễ đo, giúp thấy rõ hiệu quả của lấy mẫu thích nghi. Thêm vào đó ESP32 có bộ nhớ RTC, hệ sinh thái lớn và board dễ mua.
+
+D14. Vì sao không chọn SHT40 hay SHT31, vì chúng chính xác hơn?
+Điểm khá sát: BME280 4,70, SHT31 và SHT40 4,60. Em thừa nhận SHT40 chính xác hơn (±1,8 %RH, ±0,2 °C) và dòng thấp hơn. Em vẫn chọn BME280 vì đo được cả áp suất, thư viện và module rất phổ biến, có forced mode phù hợp tốc độ lấy mẫu thấp, và hai chế độ dùng chung một cảm biến nên sai số ảnh hưởng như nhau. Đề tài so sánh hai chế độ với nhau, không phải đo chính xác tuyệt đối. Nếu độ chính xác là ưu tiên chính thì SHT40 sẽ thắng, em có tính trong phân tích độ nhạy.
+
+D15. Trọng số em chọn có thiên vị cho ESP32 và BME280 không?
+Trọng số phản ánh ưu tiên của đề tài: tiết kiệm năng lượng, hệ sinh thái và độ sẵn có. Em đã kiểm tra độ nhạy: nếu tăng trọng số dòng ngủ lên 50% thì ESP32 vẫn đứng đầu (4,50). Nếu chỉ xét tiêu chí kỹ thuật thì ESP32, ESP32-C3 và nRF52840 hòa nhau (4,60). Với cảm biến, nếu ưu tiên độ chính xác thì kết quả đổi sang SHT. Em nói rõ các kết quả này trong báo cáo thay vì giấu.
+
+D16. Nếu làm sản phẩm chạy pin thật thì em chọn gì?
+Có thể cân nhắc chip như STM32L432KC cùng cảm biến SHT40 để có năng lượng thấp nhất, nhưng cần board không có chip USB-UART và nhiều công phát triển hơn. Với đồ án này, mục tiêu là so sánh hai cách lấy mẫu trên phần cứng phổ biến, nên ESP32 và BME280 phù hợp hơn.
+
+D17. Vì sao loại BMP280, DS18B20, DHT11, DHT22?
+BMP280 và DS18B20 không đo độ ẩm nên không đáp ứng yêu cầu R1. DHT11 và DHT22 tiêu thụ cỡ mA khi đọc, chỉ đọc được tối đa mỗi 1 đến 2 giây và có giao thức một dây riêng, không phù hợp node phải ngủ gần như cả thời gian.
+
+D18. BME280 so với BME680 thế nào?
+BME680 thêm cảm biến khí mà đề tài không dùng. Khi bật cảm biến khí dòng tiêu thụ lên 0,09 đến 12 mA, trong khi chỉ đo nhiệt độ, độ ẩm và áp suất thì cả hai ở mức vài µA. Vì vậy BME280 đơn giản và phù hợp hơn.
+
+D19. Số liệu so sánh em lấy từ đâu?
+Từ datasheet hoặc trang sản phẩm của nhà sản xuất. Phần hệ sinh thái và độ sẵn có là đánh giá chủ quan của em. Một chỗ chưa có số (dòng ngủ SAMD21) em ghi [datasheet value] và bổ sung khi có. [Điền: em đã đối chiếu thêm datasheet nào.]
+
+D20. Em chứng minh tổ hợp cuối cùng là ESP32 + BME280 như thế nào?
+Em ghép từng vi điều khiển với từng cảm biến đạt yêu cầu R1 rồi lấy điểm trung bình (Bảng A.8). ESP32 + BME280 đứng đầu với 4,73; ESP32 + SHT31 hoặc SHT40 là 4,68. ESP32 đứng đầu ở mọi cách đặt trọng số em đã thử, nên chọn vi điều khiển là vững. Cảm biến sát hơn: nếu ưu tiên độ chính xác thì SHT40 thắng (4,78 so với 4,53). Em vẫn chọn BME280 vì đề tài không nhằm đo chính xác tuyệt đối, và vì có áp suất, thư viện phổ biến, forced mode. Em nói rõ SHT40 là phương án dự phòng, vì cùng bus I2C chỉ cần đổi driver.
+
+==================================================
+PHẦN E. CÂU HỎI BẪY VÀ CÁCH XỬ LÝ
+==================================================
+
+E1. Tiết kiệm được bao nhiêu phần trăm?
+Chưa đo thì nói thật: mục tiêu của em là ít nhất [X %] ở môi trường ổn định và sẽ báo cáo số đo thật ở Chương 4. Không nói con số khi chưa có dữ liệu.
+
+E2. Nếu môi trường luôn biến động thì thích nghi còn tiết kiệm không?
+Không. Khi dữ liệu liên tục vượt ngưỡng, chu kỳ ở Tmin nên gần như bằng chế độ cố định. Tiết kiệm chủ yếu ở giai đoạn ổn định. Đây là giới hạn của phương pháp và em sẽ nêu trong kết quả.
+
+E3. Phương pháp của em có tối ưu không?
+Không tuyên bố tối ưu. Đây là phương pháp đơn giản, hiệu quả ở mức đủ dùng cho vi điều khiển nhỏ. Tối ưu hơn có thể dùng dự đoán hoặc học máy, nhưng phức tạp hơn và ngoài phạm vi.
+
+E4. Em có chắc dữ liệu thích nghi không làm mất thông tin quan trọng?
+Không chắc tuyệt đối. Em kiểm bằng sai số MAE, RMSE và sai số lớn nhất so với mốc cố định, và so với độ chính xác cảm biến. Nếu sai số vượt giới hạn thì giảm ngưỡng hoặc giảm Tmax.
+
+E5. Nếu làm lại em sẽ cải tiến gì?
+Thêm đo bằng pin để ước lượng tuổi thọ, thử với nhiều node và nhiều môi trường, và đánh giá tham số thích nghi tự động. (Đây là hướng phát triển ở Chương 5.)
+
+==================================================
+LƯU Ý KHI TRẢ LỜI
+==================================================
+- Nếu không biết thì nói "em chưa kiểm chứng phần này" và nêu cách em sẽ kiểm, đừng đoán.
+- Mang theo Bảng 3.1 (yêu cầu), Bảng 3.2 và 3.3 (xếp hạng linh kiện) và Phụ lục A, sơ đồ khối và lưu đồ chính để chỉ khi trả lời.
+- Thuộc kỹ: quy tắc thích nghi (C2), công thức năng lượng (C6), vì sao so sánh công bằng (D10) và vì sao chọn linh kiện (D12 đến D14), vì đây là các câu thầy cô hay hỏi.
