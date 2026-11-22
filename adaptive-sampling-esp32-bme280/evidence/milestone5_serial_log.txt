@@ -1,0 +1,325 @@
+ *  Executing task in folder adaptive-sampling-esp32-bme280: C:\Users\Administrator\.platformio\penv\Scripts\platformio.exe device monitor --port COM3 
+
+--- Terminal on COM3 | 115200 8-N-1
+--- Available filters and text transformations: debug, default, direct, esp32_exception_decoder, hexlify, log2file, nocontrol, printable, send_on_enter, time
+--- More details at https://bit.ly/pio-monitor-filters
+--- Quit: Ctrl+C | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 1
+Sample index: 0
+Previous interval: 10 seconds
+Wake-up cause: POWER-ON / OTHER
+--------------------------------
+Temperature: 25.00
+Humidity: 60.00
+Pressure: 1000.00
+First reading: no comparison yet.
+--------------------------------
+Next sampling interval: 10 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 2
+Sample index: 1
+Previous interval: 10 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.10
+Humidity: 60.20
+Pressure: 1000.20
+Change score: 0.200
+Stable count: 1
+--------------------------------
+Next sampling interval: 10 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 3
+Sample index: 2
+Previous interval: 10 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.15
+Humidity: 60.10
+Pressure: 1000.30
+Change score: 0.100
+Stable count: 2
+--------------------------------
+Next sampling interval: 10 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 4
+Sample index: 3
+Previous interval: 10 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.20
+Humidity: 60.20
+Pressure: 1000.40
+Change score: 0.100
+Stable count: 3
+Stable environment: increasing interval.
+--------------------------------
+Next sampling interval: 15 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 5
+Sample index: 4
+Previous interval: 15 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.30
+Humidity: 60.10
+Pressure: 1000.30
+Change score: 0.200
+Stable count: 1
+--------------------------------
+Next sampling interval: 15 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 6
+Sample index: 5
+Previous interval: 15 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.30
+Humidity: 60.20
+Pressure: 1000.20
+Change score: 0.100
+Stable count: 2
+--------------------------------
+Next sampling interval: 15 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 7
+Sample index: 6
+Previous interval: 15 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 25.40
+Humidity: 60.20
+Pressure: 1000.30
+Change score: 0.200
+Stable count: 3
+Stable environment: increasing interval.
+--------------------------------
+Next sampling interval: 23 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 8
+Sample index: 7
+Previous interval: 23 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 26.00
+Humidity: 64.50
+Pressure: 1002.00
+Change score: 1.700
+Rapid change detected.
+--------------------------------
+Next sampling interval: 12 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 9
+Sample index: 8
+Previous interval: 12 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 26.10
+Humidity: 64.60
+Pressure: 1002.10
+Change score: 0.200
+Stable count: 1
+--------------------------------
+Next sampling interval: 12 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 10
+Sample index: 9
+Previous interval: 12 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 26.15
+Humidity: 64.60
+Pressure: 1002.20
+Change score: 0.100
+Stable count: 2
+--------------------------------
+Next sampling interval: 12 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 11
+Sample index: 10
+Previous interval: 12 seconds
+Wake-up cause: TIMER
+--------------------------------
+Temperature: 26.20
+Humidity: 64.70
+Pressure: 1002.10
+Change score: 0.100
+Stable count: 3
+Stable environment: increasing interval.
+--------------------------------
+Next sampling interval: 18 seconds
+Entering deep sleep...
+ets Jul 29 2019 12:21:46
+
+rst:0x5 (DEEPSLEEP_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:4640
+load:0x40078000,len:15632
+load:0x40080400,len:3164
+entry 0x4008059c
+
+================================
+MILESTONE 5: ADAPTIVE + DEEP SLEEP
+================================
+Wake count: 12
+Sample index: 11
+Previous interval: 18 seconds
+Wake-up cause: TIMER
+Simulation completed.
+Restart ESP32 to run again.
