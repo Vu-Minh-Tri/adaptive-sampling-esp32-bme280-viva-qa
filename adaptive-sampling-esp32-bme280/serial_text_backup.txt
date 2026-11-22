@@ -1,0 +1,27 @@
+#include <Arduino.h>
+
+void setup() {
+    Serial.begin(115200);
+    delay(1000);
+
+    Serial.println();
+    Serial.println("========================");
+    Serial.println("PLATFORMIO ESP32 TEST");
+    Serial.println("Board: ESP32 DevKit V1");
+    Serial.println("Status: Started");
+    Serial.println("========================");
+}
+
+void loop() {
+    static unsigned long counter = 0;
+
+    counter++;
+
+    Serial.print("Counter: ");
+    Serial.print(counter);
+    Serial.print(" | Uptime: ");
+    Serial.print(millis());
+    Serial.println(" ms");
+
+    delay(1000);
+}
